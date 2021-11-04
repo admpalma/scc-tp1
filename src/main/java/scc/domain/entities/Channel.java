@@ -1,6 +1,7 @@
 package scc.domain.entities;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Channel {
 
     @Id
+    @GeneratedValue
     private String id;
     private String name;
     private String owner;

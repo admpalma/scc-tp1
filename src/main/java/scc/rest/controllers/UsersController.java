@@ -36,7 +36,7 @@ public class UsersController {
 
     @GetMapping("/{id}/channels")
     public List<String> getUserChannels(@PathVariable String id) {
-        log.info("Requesting user with id: " + id);
+        log.info("Getting the channels of the user with id: " + id);
         return users.getUserChannels(id).orElseThrow();
     }
 
