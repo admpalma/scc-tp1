@@ -35,20 +35,18 @@ public class ChannelsController {
         return channels.getChannel(id).orElseThrow();
     }
 
-    @GetMapping("/{channelId}/add/{userId}")
-    public void getUserChannels(@PathVariable String channelId, @PathVariable String userId) {
+    @PostMapping("/{channelId}/add/{userId}")
+    public void addUserToChannel(@PathVariable String channelId, @PathVariable String userId) {
         log.info("Adding user with id: " + userId + " to the members of private channel with id " + channelId +
                 " and registers the channel in the subscribed channels of the user");
         channels.addUserToChannel(channelId, userId);
     }
 
     @GetMapping("/{channelId}/messages")
-    public List<Message> getMessages(@PathVariable String channelId, @RequestParam int st, @RequestParam int len) {
+    public List<Message> getChannelMessages(@PathVariable String channelId, @RequestParam int st, @RequestParam int len) {
         log.info("Get the list of messages of channel with id: " + channelId);
         return channels.getMessages(channelId, st, len);
-
     }
-
 
 }
 
