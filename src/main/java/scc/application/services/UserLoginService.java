@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import scc.application.dto.UserLoginDto;
 import scc.application.repositories.UsersRepository;
 
 @Service
@@ -21,11 +20,9 @@ public class UserLoginService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserLoginDto loginDto = users.getById(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        System.out.println("dffgiojdgdgdf");
-        return User.withUsername(loginDto.getName())
-                .password(loginDto.getPwd())
-                .roles("USER")
+        scc.domain.entities.User login = users.findById(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        return User.withUsername(login.getId())
+                .password(login.getPwd())
                 .build();
     }
 }
