@@ -23,6 +23,7 @@ public class UserLoginService implements UserDetailsService {
         scc.domain.entities.User login = users.findById(username).orElseThrow(() -> new UsernameNotFoundException(username));
         return User.withUsername(login.getId())
                 .password(login.getPwd())
+                .roles("USER")
                 .build();
     }
 }
