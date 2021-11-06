@@ -10,7 +10,6 @@ import scc.application.repositories.MediaRepository;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.UUID;
 
 @Repository
 public class AzureBlobMediaRepository implements MediaRepository {
