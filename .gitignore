@@ -39,3 +39,7 @@ mvnw
 mvnw.cmd
 
 env/
+
+src/test/artillery/users.data
+
+src/test/artillery/runAll.bat
