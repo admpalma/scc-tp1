@@ -14,6 +14,7 @@ import scc.application.services.UsersService;
 import scc.domain.entities.User;
 import scc.rest.models.AuthenticationModel;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -39,27 +40,27 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable String id) {
+    public User getUser(@PathVariable String id, Principal principal) {
         log.info("Requesting user with id: " + id);
-        return users.getUser(id).orElseThrow();
+        return users.getUser(id, principal.getName()).orElseThrow();
     }
 
     @GetMapping("/{id}/channels")
-    public List<String> getUserChannels(@PathVariable String id) {
+    public List<String> getUserChannels(@PathVariable String id, Principal principal) {
         log.info("Getting the channels of the user with id: " + id);
-        return users.getUserChannels(id).orElseThrow();
+        return users.getUserChannels(id, principal.getName()).orElseThrow();
     }
 
     @PostMapping("/{id}/subscribe/{channelId}")
-    public void subscribeToChannel(@PathVariable String id, @PathVariable String channelId) {
+    public void subscribeToChannel(@PathVariable String id, @PathVariable String channelId, Principal principal) {
         log.info("Subscribing to: " + channelId + " user with id: " + id);
-        users.subscribeToChannel(id, channelId);
+        users.subscribeToChannel(id, channelId, principal.getName());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable String id) {
+    public void deleteUser(@PathVariable String id, Principal principal) {
         log.info("Deleting user with id: " + id);
-        users.deleteUser(id);
+        users.deleteUser(id, principal.getName());
     }
 
     @PostMapping("/auth")

@@ -22,22 +22,32 @@ public class UsersService {
         return users.save(user);
     }
 
-    public Optional<User> getUser(String id) {
-        return users.findById(id);
+    public Optional<User> getUser(String id, String principal) {
+        return hasPermission(id, principal) ? users.findById(id) : Optional.empty();
     }
 
-    public Optional<List<String>> getUserChannels(String id) {
-        return users.findById(id).map(User::getChannelIds);
+    public Optional<List<String>> getUserChannels(String id, String principal) {
+        return hasPermission(id, principal) ? users.findById(id).map(User::getChannelIds) : Optional.empty();
     }
 
-    public void subscribeToChannel(String id, String channelId) {
+    public void subscribeToChannel(String id, String channelId, String principal) {
+        if (!hasPermission(id, principal)) {
+            return;
+        }
         users.findById(id).ifPresent(user -> {
             user.getChannelIds().add(channelId);
             users.save(user);
         });
     }
 
-    public void deleteUser(String id) {
+    public void deleteUser(String id, String principal) {
+        if (!hasPermission(id, principal)) {
+            return;
+        }
         users.deleteById(id);
+    }
+
+    private boolean hasPermission(String id, String principal) {
+        return id.equals(principal);
     }
 }
