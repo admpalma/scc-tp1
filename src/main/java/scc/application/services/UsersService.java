@@ -72,6 +72,7 @@ public class UsersService {
             throw new PermissionDeniedException();
         }
         users.deleteById(id);
+        //TODO delete all occurrences on channels' members
     }
 
     private boolean hasPermission(String id, String principal) {
