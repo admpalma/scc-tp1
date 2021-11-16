@@ -28,7 +28,7 @@ public class ChannelsService {
     }
 
     public Channel addChannel(Channel channel) {
-        if (channels.existsById(channel.getId())) {
+        if (channel.getId() != null && channels.existsById(channel.getId())) {
             throw new EntityAlreadyExistsException();
         }
         return channels.save(channel);
