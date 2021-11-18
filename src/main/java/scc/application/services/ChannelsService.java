@@ -1,6 +1,14 @@
 package scc.application.services;
 
+import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.PartitionKey;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import scc.application.exceptions.*;
 import scc.application.repositories.ChannelsRepository;
@@ -11,21 +19,20 @@ import scc.domain.entities.Message;
 import scc.domain.entities.User;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ChannelsService {
-
+    private static final String MEMBERS_PATH="/members/0";
     private final ChannelsRepository channels;
-    private final UsersRepository users;
+    //private final UsersRepository users;
     private final MessagesRepository messages;
+    private final CosmosDatabase cosmosDatabase;
 
-    @Autowired
-    public ChannelsService(ChannelsRepository channels, UsersRepository users, MessagesRepository messages) {
-        this.channels = channels;
-        this.users = users;
-        this.messages = messages;
-    }
+    @Value("${containers.channels.name}")
+    private String channelContainerName;
+
+
 
     public Channel addChannel(Channel channel) {
         if (channel.getId() != null && channels.existsById(channel.getId())) {
@@ -40,7 +47,15 @@ public class ChannelsService {
         }
         return channels.findById(id).orElseThrow();
     }
-
+    private int addSubscribedUser(String channelId,String userId){
+        CosmosContainer channels = cosmosDatabase.getContainer(channelContainerName);
+        PartitionKey partitionKey = new PartitionKey(channelId);
+        CosmosPatchOperations op = CosmosPatchOperations.create().add(
+                MEMBERS_PATH, userId);
+        CosmosItemResponse<User> res = null;
+        res = channels.patchItem(channelId, partitionKey, op, User.class);
+        return res.getStatusCode();
+    }
     public void addUserToChannel(String channelId, String userId, String principal) {
         if (!hasPermission(userId, principal)) {
             throw new PermissionDeniedException();
@@ -49,11 +64,10 @@ public class ChannelsService {
         if (channel.isPublicChannel()) {
             throw new PrivateChannelException();
         }
-        User user = users.findById(userId).orElseThrow();
-        user.getChannelIds().add(channelId);
-        channel.getMembers().add(userId);
-        users.save(user);
-        channels.save(channel);
+        if(HttpStatus.OK.value() == addSubscribedUser(channelId,userId)){
+            channels.save(channel);
+        }
+
     }
 
     public List<Message> getMessages(String channelId, int st, int len, String principal) {

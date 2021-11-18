@@ -10,6 +10,7 @@ import scc.application.repositories.MediaRepository;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.UUID;
 
 @Repository
 public class AzureBlobMediaRepository implements MediaRepository {
@@ -25,7 +26,8 @@ public class AzureBlobMediaRepository implements MediaRepository {
 
     @Override
     public String uploadMedia(byte[] data) {
-        String fileName = Arrays.hashCode(data) + ".jpg"; //TODO jpg to ease debug
+        //Arrays.hashCode(data)
+        String fileName = UUID.randomUUID()+ ".jpg"; //TODO jpg to ease debug
         BlobClient blobClient = containerClient.getBlobClient(fileName);
         blobClient.upload(BinaryData.fromBytes(data));
         return fileName;
