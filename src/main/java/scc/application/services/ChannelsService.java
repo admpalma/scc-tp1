@@ -1,15 +1,11 @@
 package scc.application.services;
 
-import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.PartitionKey;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import reactor.core.publisher.Mono;
 import scc.application.exceptions.*;
 import scc.application.repositories.ChannelsRepository;
 import scc.application.repositories.MessagesRepository;
@@ -23,16 +19,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ChannelsService {
-    private static final String MEMBERS_PATH="/members/0";
+
+    private final UsersRepository users;
     private final ChannelsRepository channels;
-    //private final UsersRepository users;
     private final MessagesRepository messages;
-    private final CosmosDatabase cosmosDatabase;
-
-    @Value("${containers.channels.name}")
-    private String channelContainerName;
-
-
 
     public Channel addChannel(Channel channel) {
         if (channel.getId() != null && channels.existsById(channel.getId())) {
@@ -47,15 +37,7 @@ public class ChannelsService {
         }
         return channels.findById(id).orElseThrow();
     }
-    private int addSubscribedUser(String channelId,String userId){
-        CosmosContainer channels = cosmosDatabase.getContainer(channelContainerName);
-        PartitionKey partitionKey = new PartitionKey(channelId);
-        CosmosPatchOperations op = CosmosPatchOperations.create().add(
-                MEMBERS_PATH, userId);
-        CosmosItemResponse<User> res = null;
-        res = channels.patchItem(channelId, partitionKey, op, User.class);
-        return res.getStatusCode();
-    }
+
     public void addUserToChannel(String channelId, String userId, String principal) {
         if (!hasPermission(userId, principal)) {
             throw new PermissionDeniedException();
@@ -64,10 +46,11 @@ public class ChannelsService {
         if (channel.isPublicChannel()) {
             throw new PrivateChannelException();
         }
-        if(HttpStatus.OK.value() == addSubscribedUser(channelId,userId)){
-            channels.save(channel);
-        }
-
+        Mono<CosmosItemResponse<Channel>> channelMono = channels.addUserToChannel(channelId, userId);
+        CosmosItemResponse<User> userResponse = users.subscribeToChannel(channelId, userId).blockOptional().orElseThrow();
+        CosmosItemResponse<Channel> channelResponse = channelMono.blockOptional().orElseThrow();
+        Assert.isTrue(userResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add Channel as subscription");
+        Assert.isTrue(channelResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add User as member");
     }
 
     public List<Message> getMessages(String channelId, int st, int len, String principal) {
