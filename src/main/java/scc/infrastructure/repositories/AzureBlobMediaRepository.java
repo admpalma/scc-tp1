@@ -26,8 +26,7 @@ public class AzureBlobMediaRepository implements MediaRepository {
 
     @Override
     public String uploadMedia(byte[] data) {
-        //Arrays.hashCode(data)
-        String fileName = UUID.randomUUID()+ ".jpg"; //TODO jpg to ease debug
+        String fileName = UUID.randomUUID() + ".jpg"; //TODO jpg to ease debug
         BlobClient blobClient = containerClient.getBlobClient(fileName);
         blobClient.upload(BinaryData.fromBytes(data));
         return fileName;

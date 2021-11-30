@@ -66,6 +66,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-search-documents</artifactId>
+            <version>11.4.4</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

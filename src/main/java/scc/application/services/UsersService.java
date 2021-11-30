@@ -1,12 +1,7 @@
 package scc.application.services;
 
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.PartitionKey;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
