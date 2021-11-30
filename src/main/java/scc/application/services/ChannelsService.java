@@ -1,7 +1,6 @@
 package scc.application.services;
 
 import com.azure.cosmos.models.CosmosItemResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -17,12 +16,17 @@ import scc.domain.entities.User;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ChannelsService {
 
     private final UsersRepository users;
     private final ChannelsRepository channels;
     private final MessagesRepository messages;
+
+    public ChannelsService(UsersRepository users, ChannelsRepository channels, MessagesRepository messages) {
+        this.users = users;
+        this.channels = channels;
+        this.messages = messages;
+    }
 
     public Channel addChannel(Channel channel) {
         if (channel.getId() != null && channels.existsById(channel.getId())) {

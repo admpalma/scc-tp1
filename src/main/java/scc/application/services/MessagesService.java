@@ -1,13 +1,12 @@
 package scc.application.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import scc.application.exceptions.EntityNotFoundException;
 import scc.application.exceptions.MessageNotFoundException;
 import scc.application.exceptions.PermissionDeniedException;
-import scc.application.repositories.SearchMessages;
 import scc.application.repositories.ChannelsRepository;
 import scc.application.repositories.MessagesRepository;
+import scc.application.repositories.SearchMessages;
 import scc.domain.entities.Message;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class MessagesService {
     private final ChannelsRepository channels;
     private final SearchMessages searchMessages;
 
-    @Autowired
     public MessagesService(MessagesRepository messages, ChannelsRepository channels, SearchMessages searchMessages) {
         this.messages = messages;
         this.channels = channels;

@@ -1,4 +1,4 @@
 package scc.application.exceptions;
 
-public class MessageNotFoundException extends RuntimeException{
+public class MessageNotFoundException extends RuntimeException {
 }

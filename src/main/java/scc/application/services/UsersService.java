@@ -1,7 +1,6 @@
 package scc.application.services;
 
 import com.azure.cosmos.models.CosmosItemResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -19,14 +18,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class UsersService {
 
     private final UsersRepository users;
     private final ChannelsRepository channels;
 
+    public UsersService(UsersRepository users, ChannelsRepository channels) {
+        this.users = users;
+        this.channels = channels;
+    }
+
     public User addUser(User user) {
-        if(users.existsById(user.getId())){
+        if (users.existsById(user.getId())) {
             throw new EntityAlreadyExistsException();
         }
         return users.save(user);

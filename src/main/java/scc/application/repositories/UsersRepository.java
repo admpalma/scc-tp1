@@ -2,11 +2,11 @@ package scc.application.repositories;
 
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.NoRepositoryBean;
 import reactor.core.publisher.Mono;
 import scc.domain.entities.User;
 
-@Repository
+@NoRepositoryBean
 public interface UsersRepository extends CosmosRepository<User, String> {
     Mono<CosmosItemResponse<User>> subscribeToChannel(String channelId, String userId);
 }

@@ -26,7 +26,6 @@ public class AzureCognitiveSearchMessages implements SearchMessages {
 
     private final SearchClient searchClient;
 
-
     public AzureCognitiveSearchMessages(@Value("${searchKey}") String searchKey,
                                         @Value("${searchUrl}") String searchUrl,
                                         @Value("${searchIndex}") String searchIndex) {

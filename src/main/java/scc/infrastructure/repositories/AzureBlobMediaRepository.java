@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import scc.application.repositories.MediaRepository;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
