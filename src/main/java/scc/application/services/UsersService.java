@@ -49,16 +49,16 @@ public class UsersService {
         return users.findById(id).map(User::getChannelIds);
     }
 
-    public void subscribeToChannel(String id, String channelId, String principal) {
-        if (!hasPermission(id, principal)) {
+    public void subscribeToChannel(String userId, String channelId, String principal) {
+        if (!hasPermission(userId, principal)) {
             throw new PermissionDeniedException();
         }
         Channel channel = channels.findById(channelId).orElseThrow(EntityNotFoundException::new);
         if (!channel.isPublicChannel()) {
             throw new PrivateChannelException();
         }
-        Mono<CosmosItemResponse<Channel>> channelMono = channels.addUserToChannel(channelId, id);
-        CosmosItemResponse<User> userResponse = users.subscribeToChannel(channelId, id).blockOptional().orElseThrow();
+        Mono<CosmosItemResponse<Channel>> channelMono = channels.addUserToChannel(channelId, userId);
+        CosmosItemResponse<User> userResponse = users.subscribeToChannel(userId, channelId).blockOptional().orElseThrow();
         CosmosItemResponse<Channel> channelResponse = channelMono.blockOptional().orElseThrow();
         Assert.isTrue(userResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add Channel as subscription");
         Assert.isTrue(channelResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add User as member");

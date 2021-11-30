@@ -51,13 +51,13 @@ public class ChannelsService {
             throw new PrivateChannelException();
         }
         Mono<CosmosItemResponse<Channel>> channelMono = channels.addUserToChannel(channelId, userId);
-        CosmosItemResponse<User> userResponse = users.subscribeToChannel(channelId, userId).blockOptional().orElseThrow();
+        CosmosItemResponse<User> userResponse = users.subscribeToChannel(userId, channelId).blockOptional().orElseThrow();
         CosmosItemResponse<Channel> channelResponse = channelMono.blockOptional().orElseThrow();
         Assert.isTrue(userResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add Channel as subscription");
         Assert.isTrue(channelResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add User as member");
     }
 
-    public List<Message> getMessages(String channelId, int st, int len, String principal) {
+    public List<Message> getMessages(String channelId, int st, int len, String principal) { //TODO coerce st len
         if (st < 0 || len <= 0) {
             throw new NegativeInputsException();
         }

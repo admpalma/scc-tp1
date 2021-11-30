@@ -8,5 +8,5 @@ import scc.domain.entities.User;
 
 @NoRepositoryBean
 public interface UsersRepository extends CosmosRepository<User, String> {
-    Mono<CosmosItemResponse<User>> subscribeToChannel(String channelId, String userId);
+    Mono<CosmosItemResponse<User>> subscribeToChannel(String userId, String channelId);
 }
