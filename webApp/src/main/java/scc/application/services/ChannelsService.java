@@ -43,11 +43,8 @@ public class ChannelsService {
     }
 
     public void addUserToChannel(String channelId, String userId, String principal) {
-        if (!hasPermission(userId, principal)) {
-            throw new PermissionDeniedException();
-        }
         Channel channel = channels.findById(channelId).orElseThrow(EntityNotFoundException::new);
-        if (channel.isPublicChannel()) {
+        if (channel.isPublicChannel() || !hasPermission(principal, channel.getOwner())) {
             throw new PrivateChannelException();
         }
         Mono<CosmosItemResponse<Channel>> channelMono = channels.addUserToChannel(channelId, userId);
