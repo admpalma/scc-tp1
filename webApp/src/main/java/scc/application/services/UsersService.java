@@ -10,8 +10,10 @@ import scc.application.exceptions.EntityNotFoundException;
 import scc.application.exceptions.PermissionDeniedException;
 import scc.application.exceptions.PrivateChannelException;
 import scc.application.repositories.ChannelsRepository;
+import scc.application.repositories.RemovedUserRepository;
 import scc.application.repositories.UsersRepository;
 import scc.domain.entities.Channel;
+import scc.domain.entities.RemovedUser;
 import scc.domain.entities.User;
 
 import java.util.List;
@@ -22,10 +24,12 @@ public class UsersService {
 
     private final UsersRepository users;
     private final ChannelsRepository channels;
+    private final RemovedUserRepository removedUsers;
 
-    public UsersService(UsersRepository users, ChannelsRepository channels) {
+    public UsersService(UsersRepository users, ChannelsRepository channels, RemovedUserRepository removedUsers) {
         this.users = users;
         this.channels = channels;
+        this.removedUsers = removedUsers;
     }
 
     public User addUser(User user) {
@@ -64,13 +68,11 @@ public class UsersService {
         Assert.isTrue(channelResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add User as member");
     }
 
-
     public void deleteUser(String id, String principal) {
         if (!hasPermission(id, principal)) {
             throw new PermissionDeniedException();
         }
-        users.deleteById(id);
-        //TODO delete all occurrences on channels' members
+        removedUsers.save(new RemovedUser(id));
     }
 
     private boolean hasPermission(String id, String principal) {
