@@ -36,6 +36,12 @@
             <artifactId>azure-cosmos</artifactId>
             <version>4.21.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-storage-blob</artifactId>
+            <version>12.14.2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
