@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-cache
+  template:
+    metadata:
+      labels:
+        app: redis-cache
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: redis-cache
+        image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
+        env:
+        - name: REDIS_PASSWORD
+          value: "password"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 6379
+          name: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cache
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: redis-cache
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: webapp
+        image: webapp
+        imagePullPolicy: Never
+#        resources:
+#          requests:
+#            cpu: 100m
+#            memory: 128Mi
+#          limits:
+#            cpu: 250m
+#            memory: 256Mi
+        ports:
+        - containerPort: 80
+        env:
+        - name: BlobStoreConnection
+          value: "TODO"
+        - name: COSMOSDB_KEY
+          value: "TODO"
+        - name: COSMOSDB_URL
+          value: "TODO"
+        - name: COSMOSDB_DATABASE
+          value: "TODO"
+        - name: REDIS_KEY
+          value: "password"
+        - name: REDIS_URL
+          value: "redis-cache"
+        - name: SEARCH_KEY
+          value: "TODO"
+        - name: SEARCH_URL
+          value: "TODO"
+        - name: SEARCH_INDEX
+          value: "TODO"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 80
+  selector:
+    app: webapp
