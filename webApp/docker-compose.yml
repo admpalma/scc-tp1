@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+
+  redis-cache:
+    image: redis
+    restart: always
+    environment:
+      REDIS_PASSWORD: "${REDIS_KEY}"
+
+  webapp:
+    build: .
+    depends_on:
+      - redis-cache
+    ports:
+      - "8080:80"
+    environment:
+      BlobStoreConnection: "${BlobStoreConnection}"
+      COSMOSDB_KEY: "${COSMOSDB_KEY}"
+      COSMOSDB_URL: "${COSMOSDB_URL}"
+      COSMOSDB_DATABASE: "${COSMOSDB_DATABASE}"
+      REDIS_KEY: "${REDIS_KEY}"
+      REDIS_URL: "redis-cache"
+      SEARCH_KEY: "${SEARCH_KEY}"
+      SEARCH_URL: "${SEARCH_URL}"
+      SEARCH_INDEX: "${SEARCH_INDEX}"
