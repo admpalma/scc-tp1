@@ -6,7 +6,6 @@ import scc.application.exceptions.MessageNotFoundException;
 import scc.application.exceptions.PermissionDeniedException;
 import scc.application.repositories.ChannelsRepository;
 import scc.application.repositories.MessagesRepository;
-import scc.application.repositories.SearchMessages;
 import scc.domain.entities.Message;
 
 import java.util.List;
@@ -16,12 +15,10 @@ public class MessagesService {
 
     private final MessagesRepository messages;
     private final ChannelsRepository channels;
-    private final SearchMessages searchMessages;
 
-    public MessagesService(MessagesRepository messages, ChannelsRepository channels, SearchMessages searchMessages) {
+    public MessagesService(MessagesRepository messages, ChannelsRepository channels) {
         this.messages = messages;
         this.channels = channels;
-        this.searchMessages = searchMessages;
     }
 
     public Message addMessage(Message message, String principal) {
@@ -37,10 +34,6 @@ public class MessagesService {
             throw new PermissionDeniedException();
         }
         return message;
-    }
-
-    public List<String> getMessagesWithText(String queryText) {
-        return searchMessages.getMessagesWithText(queryText);
     }
 
 }

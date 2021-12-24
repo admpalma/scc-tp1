@@ -13,7 +13,6 @@ import scc.application.services.MessagesService;
 import scc.domain.entities.Message;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/messages")
@@ -57,12 +56,6 @@ public class MessagesController {
             log.info("The message does not exist.");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<String>> getMessageWithGivenText(@RequestParam("query") String queryText) {
-        log.info("Getting messages with id: " + queryText);
-        return new ResponseEntity<>(messages.getMessagesWithText(queryText), HttpStatus.OK);
     }
 
 }
