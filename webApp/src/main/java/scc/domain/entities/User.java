@@ -1,27 +1,31 @@
 package scc.domain.entities;
 
-import com.azure.spring.data.cosmos.core.mapping.Container;
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.With;
-import org.springframework.data.annotation.Id;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 @Data
-@With
-@AllArgsConstructor
-@NoArgsConstructor
-@Container(containerName = "Users")
 public class User {
 
     @Id
-    @PartitionKey
+    @GeneratedValue(generator = Constants.ID_GENERATOR_NAME)
+    @GenericGenerator(name = Constants.ID_GENERATOR_NAME, strategy = Constants.ID_GENERATOR_NAME)
     private String id;
     private String name;
     private String pwd;
-    private String photoId;
-    private List<String> channelIds;
+    private String photoid;
+
+    @SuppressWarnings("JpaAttributeTypeInspection")
+    @JsonIgnore
+    @ManyToMany //(targetEntity = ChannelEntity.class)
+    @JoinTable(name=Constants.table_name_1,
+            joinColumns=@JoinColumn(name=Constants.JOINT_TABLE_COL1),
+            inverseJoinColumns=@JoinColumn(name=Constants.JOINT_TABLE_COL2),
+            uniqueConstraints = @UniqueConstraint(columnNames={Constants.JOINT_TABLE_COL1,Constants.JOINT_TABLE_COL2})
+    )
+    private List<Channel> channelids;
 }

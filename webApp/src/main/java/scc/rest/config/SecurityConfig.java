@@ -41,5 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/rest/user", "/rest/user/auth", "/rest/media").permitAll()
                 .antMatchers("/**").authenticated();
+        http.headers().frameOptions().disable();
+
+
     }
 }

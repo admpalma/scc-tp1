@@ -1,0 +1,191 @@
+{
+  "aggregate": {
+    "counters": {
+      "core.vusers.created_by_name.Passive reader": 172,
+      "core.vusers.created.total": 190,
+      "engine.http.requests": 190,
+      "errors.ECONNREFUSED": 190,
+      "core.vusers.failed": 190,
+      "core.vusers.created_by_name.Troll": 18
+    },
+    "histograms": {},
+    "rates": {
+      "engine.http.request_rate": 3
+    },
+    "engine.http.request_rate": null,
+    "firstCounterAt": 1640082605700,
+    "lastCounterAt": 1640082674705,
+    "firstMetricAt": 1640082605700,
+    "lastMetricAt": 1640082674705,
+    "period": 1640082670000,
+    "summaries": {}
+  },
+  "intermediate": [
+    {
+      "counters": {
+        "core.vusers.created_by_name.Passive reader": 4,
+        "core.vusers.created.total": 5,
+        "engine.http.requests": 5,
+        "errors.ECONNREFUSED": 5,
+        "core.vusers.failed": 5,
+        "core.vusers.created_by_name.Troll": 1
+      },
+      "histograms": {},
+      "rates": {
+        "engine.http.request_rate": 1
+      },
+      "engine.http.request_rate": null,
+      "firstCounterAt": 1640082605700,
+      "lastCounterAt": 1640082609696,
+      "firstMetricAt": 1640082605700,
+      "lastMetricAt": 1640082609696,
+      "period": "1640082600000",
+      "summaries": {}
+    },
+    {
+      "counters": {
+        "core.vusers.created_by_name.Passive reader": 20,
+        "core.vusers.created.total": 20,
+        "engine.http.requests": 20,
+        "errors.ECONNREFUSED": 20,
+        "core.vusers.failed": 20
+      },
+      "histograms": {},
+      "rates": {
+        "engine.http.request_rate": 3
+      },
+      "engine.http.request_rate": null,
+      "firstCounterAt": 1640082610692,
+      "lastCounterAt": 1640082619710,
+      "firstMetricAt": 1640082610692,
+      "lastMetricAt": 1640082619710,
+      "period": "1640082610000",
+      "summaries": {}
+    },
+    {
+      "counters": {
+        "core.vusers.created_by_name.Passive reader": 24,
+        "core.vusers.created.total": 30,
+        "engine.http.requests": 30,
+        "errors.ECONNREFUSED": 30,
+        "core.vusers.failed": 30,
+        "core.vusers.created_by_name.Troll": 6
+      },
+      "histograms": {},
+      "rates": {
+        "engine.http.request_rate": 3
+      },
+      "engine.http.request_rate": null,
+      "firstCounterAt": 1640082620696,
+      "lastCounterAt": 1640082629702,
+      "firstMetricAt": 1640082620696,
+      "lastMetricAt": 1640082629702,
+      "period": "1640082620000",
+      "summaries": {}
+    },
+    {
+      "counters": {
+        "core.vusers.created_by_name.Passive reader": 27,
+        "core.vusers.created.total": 30,
+        "engine.http.requests": 30,
+        "errors.ECONNREFUSED": 30,
+        "core.vusers.failed": 30,
+        "core.vusers.created_by_name.Troll": 3
+      },
+      "histograms": {},
+      "rates": {
+        "engine.http.request_rate": 3
+      },
+      "engine.http.request_rate": null,
+      "firstCounterAt": 1640082630696,
+      "lastCounterAt": 1640082639704,
+      "firstMetricAt": 1640082630696,
+      "lastMetricAt": 1640082639704,
+      "period": "1640082630000",
+      "summaries": {}
+    },
+    {
+      "counters": {
+        "core.vusers.created_by_name.Passive reader": 28,
+        "core.vusers.created.total": 30,
+        "engine.http.requests": 30,
+        "errors.ECONNREFUSED": 30,
+        "core.vusers.failed": 30,
+        "core.vusers.created_by_name.Troll": 2
+      },
+      "histograms": {},
+      "rates": {
+        "engine.http.request_rate": 3
+      },
+      "engine.http.request_rate": null,
+      "firstCounterAt": 1640082640696,
+      "lastCounterAt": 1640082649701,
+      "firstMetricAt": 1640082640696,
+      "lastMetricAt": 1640082649701,
+      "period": "1640082640000",
+      "summaries": {}
+    },
+    {
+      "counters": {
+        "core.vusers.created_by_name.Passive reader": 25,
+        "core.vusers.created.total": 30,
+        "engine.http.requests": 30,
+        "errors.ECONNREFUSED": 30,
+        "core.vusers.failed": 30,
+        "core.vusers.created_by_name.Troll": 5
+      },
+      "histograms": {},
+      "rates": {
+        "engine.http.request_rate": 3
+      },
+      "engine.http.request_rate": null,
+      "firstCounterAt": 1640082650696,
+      "lastCounterAt": 1640082659705,
+      "firstMetricAt": 1640082650696,
+      "lastMetricAt": 1640082659705,
+      "period": "1640082650000",
+      "summaries": {}
+    },
+    {
+      "counters": {
+        "core.vusers.created_by_name.Passive reader": 30,
+        "core.vusers.created.total": 30,
+        "engine.http.requests": 30,
+        "errors.ECONNREFUSED": 30,
+        "core.vusers.failed": 30
+      },
+      "histograms": {},
+      "rates": {
+        "engine.http.request_rate": 3
+      },
+      "engine.http.request_rate": null,
+      "firstCounterAt": 1640082660696,
+      "lastCounterAt": 1640082669701,
+      "firstMetricAt": 1640082660696,
+      "lastMetricAt": 1640082669701,
+      "period": "1640082660000",
+      "summaries": {}
+    },
+    {
+      "counters": {
+        "core.vusers.created_by_name.Passive reader": 14,
+        "core.vusers.created.total": 15,
+        "engine.http.requests": 15,
+        "errors.ECONNREFUSED": 15,
+        "core.vusers.failed": 15,
+        "core.vusers.created_by_name.Troll": 1
+      },
+      "histograms": {},
+      "rates": {
+        "engine.http.request_rate": 3
+      },
+      "engine.http.request_rate": null,
+      "firstCounterAt": 1640082670696,
+      "lastCounterAt": 1640082674705,
+      "firstMetricAt": 1640082670696,
+      "lastMetricAt": 1640082674705,
+      "period": "1640082670000",
+      "summaries": {}
+    }
+  ]
+}

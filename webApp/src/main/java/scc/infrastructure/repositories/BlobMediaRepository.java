@@ -12,29 +12,28 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Repository
-public class AzureBlobMediaRepository implements MediaRepository {
+public class BlobMediaRepository implements MediaRepository {
 
     private final BlobContainerClient containerClient;
 
-    public AzureBlobMediaRepository() {
+    public BlobMediaRepository() {
+        /**
         containerClient = new BlobServiceClientBuilder()
                 .connectionString(Objects.requireNonNull(System.getenv("BlobStoreConnection")))
                 .buildClient()
-                .getBlobContainerClient("images");
+                .getBlobContainerClient("images"); **/
+        containerClient = null;
+
     }
 
     @Override
     public String uploadMedia(byte[] data) {
         String fileName = UUID.randomUUID() + ".jpg"; //TODO jpg to ease debug
-        BlobClient blobClient = containerClient.getBlobClient(fileName);
-        blobClient.upload(BinaryData.fromBytes(data));
         return fileName;
     }
 
     @Override
     public byte[] downloadMedia(String fileName) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        containerClient.getBlobClient(fileName).downloadStream(outputStream);
-        return outputStream.toByteArray();
+        return new byte[10];
     }
 }
