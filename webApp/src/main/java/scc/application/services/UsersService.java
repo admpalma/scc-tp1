@@ -13,7 +13,6 @@ import scc.domain.entities.User;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsersService {
@@ -57,9 +56,11 @@ public class UsersService {
         if (!channel.isPublicChannel()) {
             throw new PrivateChannelException();
         }
-        User user = users.findById(userId).get();
+        User user = users.findById(userId).orElseThrow(EntityNotFoundException::new);
         user.getChannelids().add(channel);
         users.save(user);
+        channel.getMembers().add(user);
+        channels.save(channel);
        }
 
     public void deleteUser(String id, String principal) {

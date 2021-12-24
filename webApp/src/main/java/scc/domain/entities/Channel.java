@@ -20,7 +20,7 @@ public class Channel {
     private boolean publicChannel;
 
     @JsonIgnore
-    @ManyToMany //(targetEntity = UserEntity.class)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name=Constants.table_name_1,
             joinColumns=@JoinColumn(name=Constants.JOINT_TABLE_COL2),
             inverseJoinColumns=@JoinColumn(name=Constants.JOINT_TABLE_COL1),

@@ -21,7 +21,7 @@ public class User {
 
     @SuppressWarnings("JpaAttributeTypeInspection")
     @JsonIgnore
-    @ManyToMany //(targetEntity = ChannelEntity.class)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name=Constants.table_name_1,
             joinColumns=@JoinColumn(name=Constants.JOINT_TABLE_COL1),
             inverseJoinColumns=@JoinColumn(name=Constants.JOINT_TABLE_COL2),

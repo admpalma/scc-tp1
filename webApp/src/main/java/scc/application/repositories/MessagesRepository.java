@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 @EnableCaching
-public interface MessagesRepository extends JpaRepository<Message,String> {
+public interface MessagesRepository extends JpaRepository<Message, String> {
 
     @Override
     @Cacheable(RedisCacheConfig.MESSAGE_CACHE)
@@ -29,7 +29,6 @@ public interface MessagesRepository extends JpaRepository<Message,String> {
     @CacheEvict(RedisCacheConfig.MESSAGE_CACHE)
     void deleteById(String id);
 
-    //@Query("select * from Messages where Messages.channel = @channelId offset @offset limit @limit")
     @Cacheable(RedisCacheConfig.MESSAGE_PAGE_CACHE) //TODO
     List<Message> findByChannel(String channel, Pageable pageable);
 }

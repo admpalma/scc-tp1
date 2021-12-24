@@ -10,6 +10,7 @@ import scc.application.repositories.UsersRepository;
 import scc.domain.entities.Channel;
 import scc.domain.entities.Message;
 import scc.domain.entities.User;
+import scc.domain.entities.UserIdProjection;
 
 import java.util.List;
 
@@ -48,14 +49,16 @@ public class ChannelsService {
         }
         user.getChannelids().add(channel);
         users.save(user);
+        channel.getMembers().add(user);
+        channels.save(channel);
     }
 
     public List<Message> getMessages(String channelId, int st, int len, String principal) { //TODO coerce st len
         if (st < 0 || len <= 0) {
             throw new NegativeInputsException();
         }
-        Channel channel = channels.findById(channelId).orElseThrow(EntityNotFoundException::new);
-        if (!channel.getMembers().contains(principal)) {
+        UserIdProjection userIdProjection = channels.findMemberidsById(channelId);
+        if (userIdProjection.getMembers().stream().map(UserIdProjection.UserSummary::getId).noneMatch(userId -> userId.equals(principal))) {
             throw new PermissionDeniedException();
         }
         Pageable pageable = PageRequest.of(st,len);
