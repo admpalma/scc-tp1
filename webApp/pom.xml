@@ -16,17 +16,11 @@
     <description>scc-tp1</description>
     <properties>
         <java.version>11</java.version>
-        <azure.version>3.11.0</azure.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-            <version>${azure.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -79,7 +73,7 @@
             <dependency>
                 <groupId>com.azure.spring</groupId>
                 <artifactId>azure-spring-boot-bom</artifactId>
-                <version>${azure.version}</version>
+                <version>3.11.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
