@@ -41,6 +41,17 @@ spec:
   selector:
     app: redis-cache
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: azure-managed-disk
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -71,8 +82,6 @@ spec:
         ports:
         - containerPort: 80
         env:
-        - name: BlobStoreConnection
-          value: "TODO"
         - name: COSMOSDB_KEY
           value: "TODO"
         - name: COSMOSDB_URL
@@ -89,6 +98,13 @@ spec:
           value: "TODO"
         - name: SEARCH_INDEX
           value: "TODO"
+        volumeMounts:
+          - mountPath: "/mnt/azure"
+            name: volume
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: azure-managed-disk
 ---
 apiVersion: v1
 kind: Service
