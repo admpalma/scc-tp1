@@ -1,10 +1,8 @@
 package scc.application.services;
 
-import com.azure.cosmos.models.CosmosItemResponse;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-import reactor.core.publisher.Mono;
 import scc.application.exceptions.*;
 import scc.application.repositories.ChannelsRepository;
 import scc.application.repositories.MessagesRepository;
@@ -12,6 +10,7 @@ import scc.application.repositories.UsersRepository;
 import scc.domain.entities.Channel;
 import scc.domain.entities.Message;
 import scc.domain.entities.User;
+import scc.domain.entities.UserIdProjection;
 
 import java.util.List;
 
@@ -44,25 +43,24 @@ public class ChannelsService {
 
     public void addUserToChannel(String channelId, String userId, String principal) {
         Channel channel = channels.findById(channelId).orElseThrow(EntityNotFoundException::new);
+        User user = users.findById(userId).orElseThrow(EntityNotFoundException::new);
         if (channel.isPublicChannel() || !hasPermission(principal, channel.getOwner())) {
             throw new PrivateChannelException();
         }
-        Mono<CosmosItemResponse<Channel>> channelMono = channels.addUserToChannel(channelId, userId);
-        CosmosItemResponse<User> userResponse = users.subscribeToChannel(userId, channelId).blockOptional().orElseThrow();
-        CosmosItemResponse<Channel> channelResponse = channelMono.blockOptional().orElseThrow();
-        Assert.isTrue(userResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add Channel as subscription");
-        Assert.isTrue(channelResponse.getStatusCode() == HttpStatus.OK.value(), "Could not add User as member");
+        user.getChannelIds().add(channel);
+        users.save(user);
     }
 
     public List<Message> getMessages(String channelId, int st, int len, String principal) { //TODO coerce st len
         if (st < 0 || len <= 0) {
             throw new NegativeInputsException();
         }
-        Channel channel = channels.findById(channelId).orElseThrow(EntityNotFoundException::new);
-        if (!channel.getMembers().contains(principal)) {
+        UserIdProjection userIdProjection = channels.findMemberidsById(channelId);
+        if (userIdProjection.getMembers().stream().map(UserIdProjection.UserSummary::getId).noneMatch(userId -> userId.equals(principal))) {
             throw new PermissionDeniedException();
         }
-        return messages.findPageByChannel(channelId, st, len);
+        Pageable pageable = PageRequest.of(st,len);
+        return messages.findByChannel(channelId, pageable);
     }
 
     private boolean hasPermission(String id, String principal) {

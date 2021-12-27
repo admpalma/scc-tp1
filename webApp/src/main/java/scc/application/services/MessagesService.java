@@ -6,8 +6,8 @@ import scc.application.exceptions.MessageNotFoundException;
 import scc.application.exceptions.PermissionDeniedException;
 import scc.application.repositories.ChannelsRepository;
 import scc.application.repositories.MessagesRepository;
-import scc.application.repositories.SearchMessages;
 import scc.domain.entities.Message;
+import scc.domain.entities.User;
 
 import java.util.List;
 
@@ -16,16 +16,15 @@ public class MessagesService {
 
     private final MessagesRepository messages;
     private final ChannelsRepository channels;
-    private final SearchMessages searchMessages;
 
-    public MessagesService(MessagesRepository messages, ChannelsRepository channels, SearchMessages searchMessages) {
+    public MessagesService(MessagesRepository messages, ChannelsRepository channels) {
         this.messages = messages;
         this.channels = channels;
-        this.searchMessages = searchMessages;
     }
 
     public Message addMessage(Message message, String principal) {
-        if (!channels.findById(message.getChannel()).orElseThrow(EntityNotFoundException::new).getMembers().contains(principal)) {
+        List<User> members = channels.findById(message.getChannel()).orElseThrow(EntityNotFoundException::new).getMembers();
+        if (members.stream().map(User::getId).noneMatch(s -> s.equals(principal))) {
             throw new PermissionDeniedException();
         }
         return messages.save(message);
@@ -33,14 +32,11 @@ public class MessagesService {
 
     public Message getMessage(String id, String principal) {
         Message message = messages.findById(id).orElseThrow(MessageNotFoundException::new);
-        if (!channels.findById(message.getChannel()).orElseThrow(EntityNotFoundException::new).getMembers().contains(principal)) {
+        List<User> members = channels.findById(message.getChannel()).orElseThrow(EntityNotFoundException::new).getMembers();
+        if (members.stream().map(User::getId).noneMatch(s -> s.equals(principal))) {
             throw new PermissionDeniedException();
         }
         return message;
-    }
-
-    public List<String> getMessagesWithText(String queryText) {
-        return searchMessages.getMessagesWithText(queryText);
     }
 
 }

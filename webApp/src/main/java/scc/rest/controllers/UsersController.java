@@ -20,12 +20,16 @@ import scc.rest.models.AuthenticationModel;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
 public class UsersController {
-
+    /**
+     * UPDATE CHANNEL SET PUBLIC_CHANNEL='TRUE' WHERE ID <> '';
+     *
+     *
+     * artillery run --output myreport2.json workload1.yml artillery report --output myreport2.html myreport2.json
+     */
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final AuthenticationManager authenticationManager;
@@ -59,16 +63,16 @@ public class UsersController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
-
     @GetMapping("/{id}/channels")
     public ResponseEntity<List<String>> getUserChannels(@PathVariable String id, Principal principal) {
         log.info("Getting the channels of the user with id: " + id);
         try {
-            Optional<List<String>> userChannels = users.getUserChannels(id, principal.getName());
+            List<String> userChannels = users.getUserChannels(id, principal.getName());
+            /** TODO: HELLO ANDRE, we have to discuss it
             if (userChannels.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(userChannels.get(), HttpStatus.OK);
+            }**/
+            return new ResponseEntity<>(userChannels,HttpStatus.OK);
         } catch (PermissionDeniedException e) {
             log.info("Permission denied.");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

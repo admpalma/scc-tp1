@@ -1,27 +1,28 @@
 package scc.domain.entities;
 
-import com.azure.spring.data.cosmos.core.mapping.Container;
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.With;
-import org.springframework.data.annotation.Id;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 @Data
-@With
-@AllArgsConstructor
-@NoArgsConstructor
-@Container(containerName = "Users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
     @Id
-    @PartitionKey
     private String id;
     private String name;
     private String pwd;
     private String photoId;
-    private List<String> channelIds;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = Constants.table_name_1,
+            joinColumns = @JoinColumn(name = Constants.JOINT_TABLE_COL1),
+            inverseJoinColumns = @JoinColumn(name = Constants.JOINT_TABLE_COL2),
+            uniqueConstraints = @UniqueConstraint(columnNames = {Constants.JOINT_TABLE_COL1, Constants.JOINT_TABLE_COL2})
+    )
+    private List<Channel> channelIds;
 }

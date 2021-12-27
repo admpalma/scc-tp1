@@ -82,22 +82,10 @@ spec:
         ports:
         - containerPort: 80
         env:
-        - name: COSMOSDB_KEY
-          value: "TODO"
-        - name: COSMOSDB_URL
-          value: "TODO"
-        - name: COSMOSDB_DATABASE
-          value: "TODO"
         - name: REDIS_KEY
           value: "password"
         - name: REDIS_URL
           value: "redis-cache"
-        - name: SEARCH_KEY
-          value: "TODO"
-        - name: SEARCH_URL
-          value: "TODO"
-        - name: SEARCH_INDEX
-          value: "TODO"
         volumeMounts:
           - mountPath: "/mnt/azure"
             name: volume
