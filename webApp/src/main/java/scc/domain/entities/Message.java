@@ -16,6 +16,8 @@ public class Message {
     private String replyTo;
     private String channel;
     private String user;
+    @Lob
+    @Column(length = 2000)
     private String text;
     private String imageId;
 

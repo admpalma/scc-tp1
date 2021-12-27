@@ -44,7 +44,7 @@ public class UsersService {
         }
         ChannelIdProjection channelIdProjection = users.findChannelidsById(id);
         List<String> channelIds = new LinkedList<>();
-        channelIdProjection.getChannelids().forEach(channelSummary -> channelIds.add(channelSummary.getId()));
+        channelIdProjection.getChannelIds().forEach(channelSummary -> channelIds.add(channelSummary.getId()));
         return channelIds;
     }
 
@@ -57,10 +57,10 @@ public class UsersService {
             throw new PrivateChannelException();
         }
         User user = users.findById(userId).orElseThrow(EntityNotFoundException::new);
-        user.getChannelids().add(channel);
+        user.getChannelIds().add(channel);
         users.save(user);
-        channel.getMembers().add(user);
-        channels.save(channel);
+//        channel.getMembers().add(user);
+//        channels.save(channel);
        }
 
     public void deleteUser(String id, String principal) {

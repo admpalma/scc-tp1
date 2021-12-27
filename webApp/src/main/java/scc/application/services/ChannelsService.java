@@ -47,10 +47,8 @@ public class ChannelsService {
         if (channel.isPublicChannel() || !hasPermission(principal, channel.getOwner())) {
             throw new PrivateChannelException();
         }
-        user.getChannelids().add(channel);
+        user.getChannelIds().add(channel);
         users.save(user);
-        channel.getMembers().add(user);
-        channels.save(channel);
     }
 
     public List<Message> getMessages(String channelId, int st, int len, String principal) { //TODO coerce st len

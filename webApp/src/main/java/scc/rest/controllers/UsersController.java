@@ -15,13 +15,11 @@ import scc.application.exceptions.EntityNotFoundException;
 import scc.application.exceptions.PermissionDeniedException;
 import scc.application.exceptions.PrivateChannelException;
 import scc.application.services.UsersService;
-import scc.domain.entities.Channel;
 import scc.domain.entities.User;
 import scc.rest.models.AuthenticationModel;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")

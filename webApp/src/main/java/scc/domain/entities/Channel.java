@@ -1,14 +1,17 @@
 package scc.domain.entities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Channel {
 
     @GeneratedValue(generator = Constants.ID_GENERATOR_NAME)
@@ -19,7 +22,6 @@ public class Channel {
     private String owner;
     private boolean publicChannel;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name=Constants.table_name_1,
             joinColumns=@JoinColumn(name=Constants.JOINT_TABLE_COL2),
